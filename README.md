@@ -1,65 +1,86 @@
-# githubPIXELCARTEL
+# L^2 L - Learn2 Learn
 
-An early-stage repository for a pixel-art trading experience. The goal is to build a marketplace where artists can mint, list, and trade pixel cards with a smooth, creator-friendly workflow.
+Preloaded guided mock-practice for O/A-Level and national-curriculum students. The demo ships with Cambridge O Level Physics `5054/21`, October/November 2025, using the supplied QP/MS files for seeded content.
 
-## Project Purpose
-- Provide artists a simple way to upload and manage pixel-card collections.
-- Offer collectors a fast, trustworthy storefront for browsing, purchasing, and reselling cards.
-- Establish transparent activity history to track provenance and value.
+## What Is Built
 
-## Key Features (planned)
-- **Creator tools:** Collection creation, metadata editing, and royalty configuration.
-- **Storefront:** Search, filters, and responsive gallery views for cards.
-- **Transactions:** Cart and checkout flow with order history.
-- **Profiles:** Public creator/collector pages with activity feeds.
-- **Observability:** Basic metrics, logging, and health checks to keep the service reliable.
+- Next.js App Router, TypeScript, Tailwind, shadcn-style primitives.
+- Student dashboard with board/level/registered-subject context, topic/subtopic mastery, timing, hint reliance, attempt-order efficiency, mark-loss patterns and improvement plan.
+- Guided exam simulator with cover instructions, scan-only star batch marking, `Next *`, re-star loop, final phase, native paper layers and one coaching hint per sub-question.
+- Mark-scheme-aware hint and grading API routes with deterministic local fallbacks.
+- Supabase schema for auth, attempts, responses, events, resource chunks, pgvector search and learner memory.
+- Native typed question rendering with editable-style React diagrams for the demo paper.
+- Extracted QP/MS text artifacts in `data/extracted`.
 
-## Tech Stack (initial direction)
-- **Frontend:** React with TypeScript, Vite for bundling, and Tailwind CSS for styling.
-- **Backend:** Node.js with Express for APIs; planned PostgreSQL for persistence.
-- **Testing & Quality:** Vitest and Testing Library for UI, Jest-style tooling for backend, ESLint + Prettier for code quality.
-- **Infrastructure:** Dockerized local development; room for CI workflows as the project matures.
+## Quick Start
 
-## Repository Structure
-- `src/` — Source entry point(s) for the application (currently placeholder `index.js`).
-- `docs/` — Documentation such as architecture notes and design decisions.
-- `README.md` — This document, outlining how to work with the project.
-- `LICENSE` — Project license (MIT).
+```bash
+npm install
+npm run dev
+```
 
-## Getting Started
-1. **Clone the repo**
-   ```bash
-   git clone <repo-url> githubPIXELCARTEL
-   cd githubPIXELCARTEL
-   ```
-2. **Install prerequisites**
-   - Node.js 20+
-   - npm or yarn
-3. **Install dependencies** (once package manifests are added)
-   ```bash
-   npm install
-   ```
-4. **Run the app** (placeholder for now)
-   ```bash
-   node src/index.js
-   ```
-5. **Run tests** (to be added as implementation progresses)
-   ```bash
-   npm test
-   ```
+Open `http://localhost:3000`. The first route redirects to `/dashboard`; the demo exam is at `/exam/demo-attempt`.
 
-## Contribution Guidelines
-- **Branching:** Create feature branches from `work` and open pull requests for review.
-- **Commits:** Keep messages concise and descriptive; group related changes together.
-- **Style:** Follow the chosen linting/formatting rules once the toolchain is in place (ESLint + Prettier planned).
-- **Docs:** Update `docs/` with design decisions, and keep this README current when workflows change.
-- **Reviews:** Request feedback early; prefer small, focused PRs.
+For manual review in Codex Desktop, run the built demo on port `3001` and keep the terminal open:
 
-## Roadmap Notes
-- Scaffold frontend (Vite + React + Tailwind) and backend (Express) packages.
-- Define database schema and migration strategy for PostgreSQL.
-- Add CI for linting, testing, and build verification.
-- Publish initial API and UI design docs in `docs/`.
+```bash
+npm run build
+powershell -ExecutionPolicy Bypass -File scripts/start-local-demo.ps1
+```
 
-## License
-Released under the MIT License. See [`LICENSE`](LICENSE) for details.
+Open `http://127.0.0.1:3001/dashboard`.
+
+## Environment
+
+Copy `.env.example` to `.env.local` when connecting external services:
+
+```bash
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+SUPABASE_SERVICE_ROLE_KEY=
+OPENAI_API_KEY=
+OPENAI_MODEL=gpt-5.4-mini
+```
+
+Without these keys, the demo still runs locally with fallback hints and deterministic grading.
+
+## Supabase
+
+Apply `supabase/migrations/0001_initial.sql` to a Supabase project. It creates:
+
+- public paper/question/mark-scheme tables
+- per-student attempts, responses and event logs
+- learner skill/progress memory
+- `resource_chunks` with `pgvector`
+- RLS policies for user-owned learning data
+
+## Seed Source
+
+The seed content is based on:
+
+- `E:/Downloads/5054_w25_qp_21.pdf`
+- `E:/Downloads/5054_w25_ms_21.pdf`
+
+The question paper says the total mark is `80`; the mark-scheme cover says `75`. The app stores `80` as the paper total and keeps both values in source metadata.
+
+Regenerate extracted text:
+
+```bash
+python scripts/extract-paper.py
+```
+
+## Figma Direction
+
+The functional demo follows the Figma file `9G1NryeaCO9cf0firS0stI`: paper diary surfaces, translucent cards, neon chart accents, a single hint modal, and star-batch navigation.
+
+## Checks
+
+```bash
+npm run lint
+npm run typecheck
+npm test
+npm run build
+npm run e2e
+```
+
+Playwright may need browser installation with `npx playwright install` on a fresh machine.

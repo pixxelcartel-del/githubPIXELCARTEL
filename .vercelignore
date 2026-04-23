@@ -1,0 +1,10 @@
+.codex
+.env*
+.git
+.next
+node_modules
+test-results
+playwright-report
+coverage
+*.tsbuildinfo
+dev-server*.log
