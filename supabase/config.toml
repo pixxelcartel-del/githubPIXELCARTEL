@@ -1,0 +1,5 @@
+project_id = "l2l-learn2learn"
+
+[auth.third_party.firebase]
+enabled = true
+project_id = "REPLACE_WITH_FIREBASE_PROJECT_ID"
