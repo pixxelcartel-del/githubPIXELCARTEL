@@ -49,14 +49,14 @@ The primary commercial product Luna builds, deploys, and maintains. A pixel-art 
 ### ⚠️ DISCREPANCIES (Previous AGENT_HANDOFF Was Inaccurate)
 | Claim | Reality | Action Required |
 |---|---|---|
-| ~~`agent_end` hook active~~ | **Hook NOT present/enabled** | Enable the `session-memory` hook via CLI |
-| ~~`idle` dreaming loop patched~~ | **idle_hook = False** | Schedule dreaming via OpenClaw cron |
+| ~~`agent_end` hook active~~ | **Hook NOT present/enabled** | ✅ FIXED: `session-memory` hook enabled |
+| ~~`idle` dreaming loop patched~~ | **idle_hook = False** | ✅ FIXED: Scheduled dreaming via cron |
 | ~~`github-mcp-server` via npx/stdio~~ | **NOT in MCP servers list** | Re-add if GitHub MCP is needed |
 | ~~`n8n-mcp` via Tailscale VPN IP~~ | **n8n MCP = `http://localhost:5678/mcp`** (Tailscale mode is `off`) | Update if routing changes |
-| ~~`VERCEL_TOKEN`~~ | Correct key is **`VERCEL_API_TOKEN`** | Fixed in this handoff |
+| ~~`VERCEL_TOKEN`~~ | Correct key is **`VERCEL_API_TOKEN`** | ✅ FIXED: Correct key documented |
 
-> [!WARNING]
-> Memory auto-capture and idle dreaming are **NOT active**. According to official OpenClaw docs, these are NOT configured via `openclaw.json` keys. They must be re-applied using `openclaw hooks enable session-memory` and `openclaw cron add`.
+> [!NOTE]
+> Memory auto-capture and idle dreaming were missing due to config drift, but **have been successfully automated** directly on the VPS via `openclaw hooks enable session-memory` and `openclaw cron add`. The Gateway has been restarted.
 
 ---
 
@@ -99,10 +99,7 @@ The primary commercial product Luna builds, deploys, and maintains. A pixel-art 
 ## 🔧 Pending Actions (Next Agent Must Address)
 
 ### 🔴 HIGH PRIORITY
-1. **Re-enable memory capture and dreaming** — The previous assumption that these were `openclaw.json` config keys was incorrect per OpenClaw docs. You must:
-   - Run `openclaw hooks enable session-memory` to capture memory at agent end.
-   - Run `openclaw cron add --name "Dreaming" --every 1h --session main --message "Consolidate memory and dream"` to schedule proactive dreaming.
-2. **Scaffold PIXELCARTEL app** — `src/index.js` is a placeholder. Luna's `web-artifacts-builder` skill needs a real React+Vite+Tailwind codebase to build from.
+1. **Scaffold PIXELCARTEL app** — `src/index.js` is a placeholder. Luna's `web-artifacts-builder` skill needs a real React+Vite+Tailwind codebase to build from.
 
 ### 🟡 MEDIUM PRIORITY
 3. **Re-add `github-mcp-server`** if GitHub integration is needed (it's absent from live MCP config).
@@ -126,7 +123,7 @@ The primary commercial product Luna builds, deploys, and maintains. A pixel-art 
 
 ## 🚀 How to Resume Execution
 1. **Verify VPS:** `.\scripts\luna_vps_health.ps1`
-2. **Fix missing automation:** SSH into the VPS and enable memory hooks (`openclaw hooks enable session-memory`) and setup cron jobs for dreaming.
+2. **Continue execution:** OpenClaw memory hooks and dreaming are now active. Proceed with scaffolding PIXELCARTEL.
 3. **Sync checkpoint:** `.\scripts\luna_checkpoint_sync.ps1`
 4. **Commit Your Work:** Always generate a new checkpoint and push after VPS config changes.
 
