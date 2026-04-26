@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme {
+  /* PIXELCARTEL Design Tokens */
+  --color-pc-black: #0A0A0F;
+  --color-pc-dark: #12121A;
+  --color-pc-surface: #1A1A26;
+  --color-pc-border: #2A2A3A;
+
+  --color-pc-primary: #6E3AFF;
+  --color-pc-primary-glow: #8B5FFF;
+  --color-pc-secondary: #FFD700;
+  --color-pc-accent: #00E5FF;
+
+  --color-pc-text: #F0F0FF;
+  --color-pc-muted: #8888AA;
+
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "Space Mono", monospace;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-pc-black);
+  color: var(--color-pc-text);
+  font-family: var(--font-display);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
