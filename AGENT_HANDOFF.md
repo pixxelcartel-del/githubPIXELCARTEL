@@ -1,37 +1,142 @@
 # 🤖 AGENT HANDOFF: Luna OpenClaw Infrastructure
+**Last Validated:** 2026-04-26T02:43 UTC | **Validated By:** Antigravity (automated live SSH inspection)
+**VPS:** `himel@100.80.74.21` | **Branch:** `chore/luna-build-checkpoint`
+**Status:** 🟢 GATEWAY ACTIVE | ⚠️ SEE DISCREPANCY LOG BELOW
 
-**Target Agent:** Any incoming AI agent tasked with managing, expanding, or troubleshooting the Luna OpenClaw VPS deployment.
-**Status:** ALL SYSTEMS NOMINAL, AUTOMATED, AND LIVE.
+---
 
-## 🎯 Immediate Context for Next Agent
-This repository (`githubPIXELCARTEL`) serves a dual purpose:
-1. It contains the local codebase for the PIXELCARTEL frontend/backend.
-2. It acts as the **Fallback Checkpoint & Configuration Hub** for the Luna OpenClaw VPS.
+## 🎯 What This Repo Is (READ THIS FIRST)
 
-You are stepping into a fully stabilized, polished, and authenticated OpenClaw environment running on the user's remote VPS (`100.80.74.21`).
+This repository serves **TWO simultaneous purposes**:
 
-## 🛠 What Has Already Been Done (Do Not Repeat)
-- **Memory & Auto-Capture:** `openclaw-mem0` is initialized and fully active. The `agent_end` hook was unblocked in `openclaw.json`, meaning Luna is successfully capturing and embedding conversation history into Qdrant automatically.
-- **Proactive Dreaming:** The `"idle"` loop is patched and active in `openclaw.json`. Luna will dream and consolidate memory every 60 minutes when inactive.
-- **Telegram Connectivity:** Telegram is `"enabled": true` in the gateway. The token was securely injected. Luna is currently live and listening for Telegram messages.
-- **Secrets Injection:** The `.env` file on the VPS (`~/.openclaw/.env`) already contains:
-  - `VERCEL_TOKEN` (for web-artifacts-builder)
-  - `N8N_API_KEY` & `N8N_MANAGEMENT_TOKEN` (for content-automation-engine workflows)
-- **System Integrity:** Orphaned Phase-0 agents were removed. Bootstrap limits (SOUL.md/MEMORY.md) were aggressively compacted. `openclaw doctor` passes health checks (ignore cosmetic bundled plugin warnings).
-- **Fallback Snapshot:** The VPS config was fully backed up into `openclaw_fallback_checkpoint.tar.gz`.
+### 1. 🎮 PIXELCARTEL Marketplace App
+The primary commercial product Luna builds, deploys, and maintains. A pixel-art NFT/card trading marketplace. Target stack: **React + Vite + Tailwind CSS (frontend) + Node.js/Express (backend) + PostgreSQL (database)**, deployed via **Vercel** using the `VERCEL_API_TOKEN` secret.
+
+**Where it lives in Luna's world:**
+- Built by Luna's `web-artifacts-builder` skill
+- Designed using `theme-factory`'s `snippets/` library
+- Content automated via `content-automation-engine` (n8n bridge)
+- Heavy coding delegated to `elon` and `mark` sub-agents
+
+**Current state:** `src/index.js` is a **placeholder only** — app is not yet scaffolded. Next milestone: scaffold React+Vite+Tailwind frontend.
+
+### 2. 🔄 Luna VPS Fallback Checkpoint Hub
+`openclaw_fallback_checkpoint.tar.gz` = full snapshot of `~/.openclaw/` on the VPS. Updated by `scripts/luna_checkpoint_sync.ps1`.
+
+---
+
+## 🔍 Live Validation Report (2026-04-26)
+
+### ✅ CONFIRMED ACTIVE
+| Component | Verified State |
+|---|---|
+| `openclaw-gateway.service` | **active (running)** — confirmed via `journalctl` |
+| `openclaw-mem0` plugin | ✅ Registered + initialized (`mode: open-source, user: luna, autoRecall: true, autoCapture: true`) |
+| `memory-core` plugin | ✅ Active |
+| `memory-lancedb` plugin | ✅ Active |
+| `browser` plugin | ✅ Active + listening on `127.0.0.1:18791` |
+| `anthropic` plugin | ✅ Active |
+| `openai` plugin | ✅ Active |
+| `ollama` plugin | ✅ Active (fallback: `qwen2.5:1.5b`, `gemma4:e4b`) |
+| Telegram Gateway | ✅ `enabled: true` — bot `@Luna_persona_bot` confirmed starting |
+| Qdrant | ✅ `healthz check passed` (localhost:6333) |
+| n8n | ✅ `{"status":"ok"}` (localhost:5678) |
+| Agent-to-Agent Access | ✅ `enabled: true` — allow: `[luna, ernest, sun-tzu, elon, mark, a]` |
+| Primary Model | ✅ `openai-codex/gpt-5.4` (all agents) |
+| ENV Secrets | ✅ **36 secrets** confirmed set (see full list below) |
+| Node.js Version | ✅ v22.22.2 |
+
+### ⚠️ DISCREPANCIES (Previous AGENT_HANDOFF Was Inaccurate)
+| Claim | Reality | Action Required |
+|---|---|---|
+| ~~`agent_end` hook active~~ | **Hook NOT present in any agent config** | Re-apply hook if auto-capture is needed |
+| ~~`idle` dreaming loop patched~~ | **idle_hook = False** | Re-apply idle hook for dreaming behavior |
+| ~~`github-mcp-server` via npx/stdio~~ | **NOT in MCP servers list** | Re-add if GitHub MCP is needed |
+| ~~`n8n-mcp` via Tailscale VPN IP~~ | **n8n MCP = `http://localhost:5678/mcp`** (Tailscale mode is `off`) | Update if routing changes |
+| ~~`VERCEL_TOKEN`~~ | Correct key is **`VERCEL_API_TOKEN`** | Fixed in this handoff |
+
+> [!WARNING]
+> The `idle` dreaming loop and `agent_end` memory capture hooks are **NOT active** in the current `openclaw.json`. They were likely present in a previous config version but lost during a backup/restore cycle. These must be re-applied if autonomous memory consolidation is required.
+
+---
+
+## 📋 Confirmed MCP Servers
+| Server | URL | Purpose |
+|---|---|---|
+| `exa` | `https://mcp.exa.ai/mcp?exaApiKey=...` | Web search via Exa |
+| `n8n-gateway` | `http://localhost:5678/mcp` | n8n workflow automation (Luna-local) |
+| `transcriptapi` | `https://transcriptapi.com/mcp` | YouTube transcript fetching |
+
+> **Missing:** `github-mcp-server` is NOT in the live config. If GitHub MCP is needed, re-add it.
+
+---
+
+## 📋 Confirmed ENV Secrets (Keys Only)
+`ANTHROPIC_API_KEY`, `PINECONE_API_KEY`, `OPENROUTER_API_KEY`, `FIRECRAWL_API_KEY`, `GITHUB_TOKEN`, `NGROK_AUTHTOKEN`, `SUPABASE_ACCESS_TOKEN`, `SUPABASE_URL`, `SUPABASE_ANON_KEY`, `SUPABASE_SERVICE_ROLE_KEY`, `GEMINI_API_KEY`, `ELEVENLABS_API_KEY`, `ELEVENLABS_VOICE_ID`, `GROQ_API_KEY`, `N8N_API_KEY`, `N8N_MCP_TOKEN`, `N8N_INSTANCE_URL`, `GOOGLE_APPLICATION_CREDENTIALS`, `OLLAMA_API_KEY`, `NEO4J_URI`, `NEO4J_USER`, `NEO4J_PASSWORD`, `QDRANT_HOST`, `QDRANT_PORT`, `SUPABASE_DB_PASSWORD`, `SUPABASE_DB_CONN`, `TAPI_KEY`, `YOUTUBE_PROXY`, `TAPI_PROXY`, `TRANSCRIPTAPI_APIKEY`, `OPENCLAW_GATEWAY_TOKEN`, `TELEGRAM_BOT_TOKEN`, `VERCEL_API_TOKEN`, `WAVESPEED_API_TOKEN`, `EXA_API_KEY`
+
+---
 
 ## 📍 Where Things Live
-- **Remote VPS Config:** `~/.openclaw/openclaw.json`
-- **Remote VPS Secrets:** `~/.openclaw/.env`
-- **Luna's Workspace:** `~/.openclaw/workspace/`
-- **Skills Directory:** `~/.openclaw/workspace/skills/`
-- **Local SOP:** [`Luna_Build_SOP.md`](./Luna_Build_SOP.md) (Consult this before modifying architectures!)
+| Item | Path |
+|---|---|
+| OpenClaw Config | `~/.openclaw/openclaw.json` |
+| ENV Secrets | `~/.openclaw/.env` (also inlined in `openclaw.json` under `env:{}`) |
+| Workspace | `~/.openclaw/workspace/` |
+| Skills (filesystem) | `~/.openclaw/skills/` (27 skill dirs) |
+| Workspace Skills | `~/.openclaw/workspace/skills/` |
+| PIXELCARTEL workspace | `~/.openclaw/workspace/pixelcartel/` |
+| Agent workspaces | `~/.openclaw/workspace-luna/`, `workspace-elon/`, `workspace-mark/`, etc. |
+| Local SOP | [`Luna_Build_SOP.md`](./Luna_Build_SOP.md) |
+| Architecture | [`docs/architecture.md`](./docs/architecture.md) |
+
+---
+
+## 🛠 Confirmed Skills (Filesystem — `~/.openclaw/skills/`)
+`3d-animation-creator`, `ai-humanizer`, `apg`, `clawddocs`, `image-generator`, `luna-core-agent`, `n8n-workflow-automation`, `seo-strategy`, `skill-creator`, `skill-linter`, `theme-factory`, `web-artifacts-builder`, `web-search-exa`, `website-intelligence`, `xurl`, `youtube-full`
+
+---
+
+## 🔧 Pending Actions (Next Agent Must Address)
+
+### 🔴 HIGH PRIORITY
+1. **Re-apply `idle` + `agent_end` hooks** in `openclaw.json` — these are missing despite being claimed active. Without them, Luna is NOT auto-capturing memories or dreaming.
+2. **Scaffold PIXELCARTEL app** — `src/index.js` is a placeholder. Luna's `web-artifacts-builder` skill needs a real React+Vite+Tailwind codebase to build from.
+
+### 🟡 MEDIUM PRIORITY
+3. **Re-add `github-mcp-server`** if GitHub integration is needed (it's absent from live MCP config).
+4. **Validate `elon` + `mark` delegation** — run a test pipeline to confirm sub-agent handoff works end-to-end.
+5. **Expand `theme-factory/snippets/`** — continuously refine for PIXELCARTEL UI.
+
+### 🟢 LOW PRIORITY
+6. Orchestrate a test pipeline through `content-automation-engine` (via n8n).
+7. Set up Windows Task Scheduler for `scripts/luna_checkpoint_sync.ps1` (every 6h).
+
+---
+
+## 🚀 Automation Scripts (NEW)
+| Script | Purpose | Run |
+|---|---|---|
+| `scripts/luna_vps_health.ps1` | Read-only VPS health check | `.\scripts\luna_vps_health.ps1` |
+| `scripts/luna_checkpoint_sync.ps1` | Full sync: verify → capture → pull → commit → push | `.\scripts\luna_checkpoint_sync.ps1` |
+| `scripts/luna_vps_validate.sh` | Bash deep validation (piped via SSH) | Used internally by above scripts |
+
+---
 
 ## 🚀 How to Resume Execution
-If you are tasked with expanding the build or fixing an issue, follow this workflow:
-1. **Verify VPS State:** Run `ssh himel@100.80.74.21 "journalctl --user -u openclaw-gateway.service -n 50"` to ensure the gateway hasn't crashed.
-2. **Execute New Tasks:** The next logical milestones based on the user's workflow are:
-   - Expanding the `snippets/` library inside the `theme-factory` skill.
-   - Orchestrating a test pipeline through the `content-automation-engine` (via n8n integration).
-   - Validating Luna's ability to seamlessly delegate sub-tasks to `elon` and `mark` agents.
-3. **Commit Your Work:** If you make configuration changes to the VPS, *always* generate a new `openclaw_fallback_checkpoint.tar.gz` and push it to this repository to maintain the fallback loop.
+1. **Verify VPS:** `.\scripts\luna_vps_health.ps1`
+2. **Fix missing hooks:** Edit `~/.openclaw/openclaw.json` → add `hooks: { idle: {...}, agent_end: {...} }` per OpenClaw docs
+3. **Sync checkpoint:** `.\scripts\luna_checkpoint_sync.ps1`
+4. **Commit Your Work:** Always generate a new checkpoint and push after VPS config changes.
+
+---
+
+## ⚡ Gateway Restart Command
+```bash
+ssh himel@100.80.74.21 "systemctl --user restart openclaw-gateway.service"
+```
+
+## 📊 Checkpoint Restoration
+```bash
+# Extract checkpoint over existing config (DESTRUCTIVE — backup first)
+ssh himel@100.80.74.21 "cp -r ~/.openclaw ~/.openclaw.bak && tar -xzf /path/to/openclaw_fallback_checkpoint.tar.gz -C ~ && systemctl --user restart openclaw-gateway.service"
+```
