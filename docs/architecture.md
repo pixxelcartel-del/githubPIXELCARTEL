@@ -57,9 +57,9 @@ graph TD
         subgraph INTEGRATIONS["🔗 Integrations"]
             TG["Telegram Bot\n(enabled: true)"]
             N8N["n8n Workflows\n(localhost:5678)"]
-            VERCEL["Vercel\n(deployment)"]
-            GH_MCP["github-mcp-server\n(npx/stdio)"]
-            N8N_MCP["n8n-mcp\n(Tailscale direct)"]
+            VERCEL["Vercel\n(VERCEL_API_TOKEN)"]
+            GH_MCP["github-mcp-server\n(NOT in live config)"]
+            N8N_MCP["n8n-mcp\nlocalhost:5678/mcp\n(Tailscale=off)"]
         end
     end
 
@@ -99,8 +99,8 @@ graph TD
     GW --> TG
     GW --> N8N
     WAB --> VERCEL
-    GH_MCP -.->|"npx stdio"| GW
-    N8N_MCP -.->|"Tailscale"| N8N
+    GH_MCP -.->|"absent from live config"| GW
+    N8N_MCP -.->|"localhost routing"| N8N
 
     %% VPS → GitHub (checkpoint loop)
     GW -->|"tar.gz snapshot"| CHECKPOINT
@@ -149,12 +149,14 @@ ssh himel@100.80.74.21 "tar -xzf openclaw_fallback_checkpoint.tar.gz -C ~ && sys
 
 ## Environment Secrets Map
 
-| Secret | Location | Used By |
-|---|---|---|
-| `VERCEL_TOKEN` | `~/.openclaw/.env` | `web-artifacts-builder` |
-| `N8N_API_KEY` | `~/.openclaw/.env` | `content-automation-engine` |
-| `N8N_MANAGEMENT_TOKEN` | `~/.openclaw/.env` | n8n-mcp bridge |
-| `TELEGRAM_TOKEN` | `openclaw.json` (inline) | Luna gateway (telegram enabled) |
+| Secret | Location | Used By | Note |
+|---|---|---|---|
+| `VERCEL_API_TOKEN` | `~/.openclaw/.env` | `web-artifacts-builder` | ✅ Live-validated key name |
+| `N8N_API_KEY` | `~/.openclaw/.env` | `content-automation-engine` | ✅ Confirmed |
+| `N8N_MCP_TOKEN` | `~/.openclaw/.env` | n8n-mcp bridge | ✅ Confirmed |
+| `TELEGRAM_BOT_TOKEN` | `openclaw.json` (inline) | Luna gateway (telegram enabled) | ✅ Confirmed |
+
+> **Note:** `N8N_MANAGEMENT_TOKEN` was previously listed — live-validated key is `N8N_MCP_TOKEN`. See AGENT_HANDOFF.md for full 36-secret list.
 
 ---
 
