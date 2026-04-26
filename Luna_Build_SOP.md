@@ -35,7 +35,13 @@ The following core factory engines are verified and aligned in Luna's workspace:
 - **Path:** `openclaw-mem0` plugin
 - **Status:** Initialized. Running on Qdrant local vector store with `nomic-embed-text` and `gpt-4o-mini`.
 
-## 4. Safe Modification Workflow
+## 4. Environment Automation & Secrets
+The following production secrets are automatically injected into `~/.openclaw/.env` and securely managed by the gateway:
+- **Vercel Token** for `web-artifacts-builder` deployment tracking.
+- **n8n API Key** and **n8n Management Token** for seamless workflows inside the `content-automation-engine`.
+- **Telegram Token** dynamically mapped to the primary `luna` agent in `openclaw.json`.
+
+## 5. Safe Modification Workflow
 1. **Pull Latest Checkpoint:** Sync the local `githubPIXELCARTEL` repo.
 2. **Modify Safely:** Edit skills or configs locally.
 3. **Deploy:** SCP the changes to the VPS.
