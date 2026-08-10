@@ -1,0 +1,23 @@
+# CODEOWNERS — pixxelcartel-del/githubPIXELCARTEL
+#
+# These owners are automatically requested for review
+# when a PR touches files matching their pattern.
+# Syntax: <pattern>  <owner1> <owner2>
+#
+# Owners can be GitHub usernames (@user) or teams (@org/team).
+
+# ── Global fallback (everything requires review) ───────────────
+*                           @pixxelcartel-del
+
+# ── Core infrastructure & config ──────────────────────────────
+/.github/                   @pixxelcartel-del
+/.gitignore                 @pixxelcartel-del
+/docker-compose*.yml        @pixxelcartel-del
+/*.config.*                 @pixxelcartel-del
+
+# ── Docs ──────────────────────────────────────────────────────
+/docs/                      @pixxelcartel-del
+/README.md                  @pixxelcartel-del
+
+# ── Source ────────────────────────────────────────────────────
+/src/                       @pixxelcartel-del
