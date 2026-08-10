@@ -1,0 +1,33 @@
+{
+  "name": "githubpixelcartel",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Pixel-art trading card marketplace — monorepo root",
+  "workspaces": [
+    "src/frontend",
+    "src/backend"
+  ],
+  "scripts": {
+    "dev": "npm run dev --workspace=src/frontend & npm run dev --workspace=src/backend",
+    "dev:frontend": "npm run dev --workspace=src/frontend",
+    "dev:backend": "npm run dev --workspace=src/backend",
+    "build": "npm run build --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "lint": "npm run lint --workspaces --if-present",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md,css}\" --ignore-path .gitignore"
+  },
+  "devDependencies": {
+    "prettier": "^3.3.3"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "es5",
+    "printWidth": 100
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
