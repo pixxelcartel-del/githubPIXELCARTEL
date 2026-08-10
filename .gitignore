@@ -1,0 +1,114 @@
+# ─────────────────────────────────────────
+#  githubPIXELCARTEL — .gitignore
+# ─────────────────────────────────────────
+
+# ── Node / npm ──────────────────────────
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.pnpm-store/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+.npmrc.local
+
+# ── Build outputs ────────────────────────
+dist/
+build/
+out/
+.output/
+.next/
+.nuxt/
+.svelte-kit/
+*.tsbuildinfo
+
+# ── Environment & secrets ────────────────
+.env
+.env.*
+!.env.example
+!.env.template
+*.local
+
+# ── Logs ────────────────────────────────
+logs/
+*.log
+*.log.*
+
+# ── Testing & coverage ───────────────────
+coverage/
+.nyc_output/
+.vitest/
+test-results/
+playwright-report/
+
+# ── TypeScript ───────────────────────────
+*.js.map
+*.d.ts.map
+
+# ── Python ──────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+.Python
+venv/
+.venv/
+env/
+.env/
+*.egg-info/
+dist/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+.mypy_cache/
+.ruff_cache/
+.pytest_cache/
+
+# ── Docker ──────────────────────────────
+.docker/
+docker-compose.override.yml
+
+# ── Database ────────────────────────────
+*.sqlite
+*.sqlite3
+*.db
+*.db-shm
+*.db-wal
+*.sql.bak
+dump.rdb
+
+# ── OS artifacts ────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ── IDE / Editors ────────────────────────
+.vscode/settings.json
+.vscode/launch.json
+.vscode/extensions.json
+!.vscode/extensions.json.template
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.swp
+*~
+
+# ── Misc ────────────────────────────────
+*.bak
+*.tmp
+*.temp
+.cache/
+.turbo/
+.vercel/
+.netlify/
